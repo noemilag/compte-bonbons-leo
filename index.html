@@ -192,6 +192,10 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
 .hw-chart text.lbl{fill:var(--ink)}
 .hw-chart text.val{font-family:var(--chunky);font-weight:900;font-size:1.15rem;font-variant-numeric:tabular-nums}
 .hw-chart text.rider{font-size:20px}
+.hw-chart text.pct{font-family:var(--chunky);font-weight:900;font-size:.95rem;fill:#1a1020}
+.hw-chart text.dnum{font-family:var(--chunky);font-weight:900;font-size:2.6rem;fill:var(--orange);filter:drop-shadow(0 0 10px rgba(255,122,26,.6))}
+.hw-chart text.dlbl{fill:var(--ink-dim);font-weight:700}
+.hw-chart path{transition:opacity .15s}
 .hw-chart text.mnum{font-weight:800;font-size:15px;fill:#1a1020}
 .hw-chart text.tname{fill:#efeaff;font-weight:700;font-size:var(--cds-font-size-caption)}
 .hw-chart text.tnum{font-family:var(--chunky);font-weight:900;font-size:1.9rem;font-variant-numeric:tabular-nums}
@@ -397,8 +401,8 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
   <section class="hw-grid">
     <div class="hw-card hw-reveal" id="categories">
       <h2>Par famille</h2>
-      <p class="note">Combien de bonbons dans chaque famille.</p>
-      <div class="hw-chart dash-skeleton" data-draw="chart-cat" data-source="categories"></div>
+      <p class="note">La part de chaque famille dans le butin. Touche une pointe pour voir le détail.</p>
+      <div class="hw-chart tall dash-skeleton" data-draw="chart-cat" data-source="categories"></div>
     </div>
     <div class="hw-card hw-reveal" id="palmares">
       <h2>La course des fantômes</h2>
@@ -905,6 +909,68 @@ dash.draw('bocal', (el) => {
   hwReveal('bocal', el, (mode) => hwCauldron(el, cats, mode));
 });
 
+/* Donut chart for the families: slices draw one after the other, total in the middle. */
+window.hwDonut = (el, items, mode) => {
+  el.replaceChildren();
+  if (!items.length) return;
+  const W = Math.max(240, Math.floor(el.clientWidth || 320));
+  const size = Math.min(W, 320);
+  const R = size / 2 - 10, r0 = R * 0.56;
+  const total = items.reduce((s, d) => s + d.value, 0);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${size}`).attr('role', 'img').attr('aria-label', 'Part de chaque famille de bonbons');
+  const g = svg.append('g').attr('transform', `translate(${W / 2},${size / 2})`);
+  const pie = d3.pie().value((d) => d.value).sort(null).padAngle(0.018);
+  const arcs = pie(items);
+  const arc = d3.arc().innerRadius(r0).outerRadius(R).cornerRadius(6);
+  const slices = g.selectAll('path').data(arcs).join('path').style('fill', (a) => a.data.color).style('filter', (a) => hwGlow(a.data.color));
+  const labels = g.selectAll('text.pct').data(arcs.filter((a) => a.data.value / total >= 0.06)).join('text')
+    .attr('class', 'pct').attr('text-anchor', 'middle').attr('dy', '0.35em')
+    .attr('transform', (a) => `translate(${arc.centroid(a)})`)
+    .text((a) => Math.round(a.data.value / total * 100) + ' %');
+  const mid = g.append('text').attr('class', 'dnum').attr('text-anchor', 'middle').attr('dy', '0.1em');
+  g.append('text').attr('class', 'dlbl').attr('text-anchor', 'middle').attr('y', R * 0.26).text('bonbons');
+
+  const final = () => { slices.attr('d', arc); labels.style('opacity', 1); mid.text(hwFmt.format(total)); };
+  if (mode === 'static') final();
+  else {
+    slices.attr('d', (a) => arc({...a, endAngle: a.startAngle}));
+    labels.style('opacity', 0);
+    mid.text('0');
+    if (mode === 'animate') {
+      const per = 380;
+      slices.transition().delay((a, i) => 150 + i * per).duration(per + 120).ease(d3.easeCubicOut)
+        .attrTween('d', (a) => { const i = d3.interpolate(a.startAngle, a.endAngle); return (t) => arc({...a, endAngle: i(t)}); });
+      labels.transition().delay(150 + items.length * per).duration(500).style('opacity', 1);
+      mid.transition().delay(150).duration(items.length * per + 200).ease(d3.easeCubicOut)
+        .tween('text', function () { const i = d3.interpolateNumber(0, total); const n = this; return (t) => { n.textContent = hwFmt.format(Math.round(i(t))); }; })
+        .on('end', function () { this.textContent = hwFmt.format(total); });
+    }
+  }
+
+  const leg = document.createElement('div');
+  leg.className = 'hw-legend';
+  items.forEach((d) => {
+    const it = document.createElement('span'); it.className = 'it';
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = d.color; sw.style.boxShadow = `0 0 8px ${d.color}`;
+    const nm = document.createElement('span'); nm.textContent = d.label;
+    const ct = document.createElement('span'); ct.className = 'ct'; ct.textContent = hwFmt.format(d.value);
+    it.append(sw, nm, ct); leg.append(it);
+  });
+  el.append(leg);
+
+  const tip = hwTip(el);
+  slices.on('pointerenter pointermove', function (ev, a) {
+    tip.show(ev, [['t1', a.data.label], ['t2', hwUnits(a.data.value)], ['t3', a.data.sub]]);
+    const [cx, cy] = arc.centroid(a), k = 8 / Math.hypot(cx, cy);
+    d3.select(this).attr('transform', `translate(${cx * k},${cy * k})`);
+    slices.style('opacity', (b) => (b === a ? 1 : 0.45));
+  }).on('pointerleave', function () {
+    tip.hide();
+    d3.select(this).attr('transform', null);
+    slices.style('opacity', 1);
+  });
+};
+
 dash.draw('chart-cat', (el) => {
   const d = dash.data('categories');
   const t = dash.data('totaux');
@@ -914,7 +980,7 @@ dash.draw('chart-cat', (el) => {
     label: r.categorie, value: r.quantite, color: hwColor(r.categorie),
     sub: hwPct.format(r.part) + ' de la récolte · ' + r.sortes + ' sortes'
   }));
-  hwReveal('chart-cat', el, (mode) => hwBars(el, items, 'Bonbons par famille', mode, null));
+  hwReveal('chart-cat', el, (mode) => hwDonut(el, items, mode));
 });
 
 dash.draw('chart-top', (el) => {
@@ -1144,7 +1210,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-8';
+  const APP_VERSION = '2026.11.01-9';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
