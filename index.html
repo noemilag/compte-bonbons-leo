@@ -36,7 +36,8 @@
 html,body{margin:0;padding:0;background:#05040a}
 .dash-skeleton{color:transparent !important;background:rgba(255,255,255,.06);border-radius:6px}
 .hw-chart.dash-skeleton{min-height:12rem}
-#dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inset-top))}
+html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inset-top, 0px))}
+@media (display-mode: standalone){html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inset-top, 0px) + 1.5rem)}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </head>
@@ -1102,7 +1103,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-4';
+  const APP_VERSION = '2026.11.01-5';
   const bar = document.querySelector('.hw-update');
   let latest = null;
   const check = async () => {
