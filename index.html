@@ -11,7 +11,11 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="Halloween">
+<meta name="apple-mobile-web-app-title" content="Halloween Dashboard">
+<meta name="application-name" content="Halloween Dashboard">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:title" content="Halloween Dashboard · Le butin hanté de Léo">
 <meta property="og:image" content="icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +36,7 @@
 html,body{margin:0;padding:0;background:#05040a}
 .dash-skeleton{color:transparent !important;background:rgba(255,255,255,.06);border-radius:6px}
 .hw-chart.dash-skeleton{min-height:12rem}
+#dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inset-top))}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 </head>
@@ -72,7 +77,7 @@ html,body{margin:0;padding:0;background:#05040a}
   };
   window.__dashStart = () => {
     runAll();
-    Promise.all([d3.csv('data/bonbons.csv'), d3.csv('data/soirees.csv')]).then(([b, s]) => {
+    Promise.all([d3.csv('data/bonbons.csv', {cache: 'no-store'}), d3.csv('data/soirees.csv', {cache: 'no-store'})]).then(([b, s]) => {
       store.bonbons = {status: 'ok', data: b, columns: b.columns, meta: []};
       store.soiree = {status: 'ok', data: s, columns: s.columns, meta: []};
       calcs.forEach((c) => { c.cache = null; });
@@ -1078,5 +1083,45 @@ document.querySelectorAll('.hw-search').forEach((inp) => {
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => window.__dashStart()); else window.__dashStart();
 </script>
 </div>
+
+<div class="hw-update" hidden role="status" aria-live="polite">
+  <span class="msg">Une nouvelle version est prête</span>
+  <button type="button">Mettre à jour</button>
+</div>
+<style>
+.hw-update{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:.75rem;
+  padding:.5rem .5rem .5rem 1.1rem;border-radius:999px;background:#1d0f33;color:#f1ecff;
+  font-family:'Fredoka',ui-rounded,system-ui,sans-serif;font-weight:600;font-size:.95rem;white-space:nowrap;
+  box-shadow:0 0 0 1px rgba(255,122,26,.6),0 12px 32px rgba(0,0,0,.65),0 0 26px rgba(255,122,26,.4)}
+.hw-update[hidden]{display:none}
+.hw-update button{all:unset;cursor:pointer;background:#ff7a1a;color:#2a0d00;font-family:'Luckiest Guy',ui-rounded,system-ui,sans-serif;letter-spacing:.03em;padding:.5rem 1.1rem;border-radius:999px;box-shadow:0 3px 0 #9a3b00}
+.hw-update button:active{transform:translateY(2px);box-shadow:0 1px 0 #9a3b00}
+@media (prefers-reduced-motion: no-preference){.hw-update:not([hidden]){animation:hw-upd .55s cubic-bezier(.2,.8,.2,1)}}
+@keyframes hw-upd{from{transform:translate(-50%,140%);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+</style>
+<script>
+/* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
+(function () {
+  const APP_VERSION = '2026.11.01-4';
+  const bar = document.querySelector('.hw-update');
+  let latest = null;
+  const check = async () => {
+    try {
+      const r = await fetch('version.json?t=' + Date.now(), {cache: 'no-store'});
+      if (!r.ok) return;
+      const j = await r.json();
+      if (j.version && j.version !== APP_VERSION) { latest = j.version; bar.hidden = false; }
+    } catch (e) { /* hors ligne : on réessaiera plus tard */ }
+  };
+  bar.querySelector('button').addEventListener('click', () => {
+    const u = new URL(location.href);
+    u.searchParams.set('v', latest || String(Date.now()));
+    location.replace(u.toString());
+  });
+  check();
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
+  setInterval(check, 30 * 60 * 1000);
+})();
+</script>
 </body>
 </html>

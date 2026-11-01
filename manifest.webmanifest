@@ -1,12 +1,21 @@
 {
-  "name": "Halloween Dashboard · Le butin hanté de Léo",
-  "short_name": "Halloween",
+  "name": "Halloween Dashboard",
+  "short_name": "Halloween Dashboard",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#05040a",
   "theme_color": "#120724",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
-  ]
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "description": "Le butin hanté de Léo : les récoltes d’Halloween, année après année."
 }

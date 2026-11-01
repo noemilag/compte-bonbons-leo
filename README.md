@@ -39,3 +39,10 @@ Dès qu'il y a deux années, un sélecteur d'année apparaît en haut, chaque ch
 Astuce : prends la feuille de décompte en photo et demande à Claude de l'ajouter.
 
 Note : la page lit ses données avec `fetch`, donc elle doit être ouverte depuis GitHub Pages (ou un petit serveur local), pas en double-cliquant sur `index.html`.
+
+## Publier une mise à jour
+
+À chaque changement de `index.html`, change la version au même endroit dans deux fichiers :
+`APP_VERSION` dans `index.html` et `version` dans `version.json`. Les téléphones qui ont l'app
+verront alors apparaître le bouton « Mettre à jour ». Les données CSV, elles, sont toujours relues
+fraîches : pas besoin de changer la version pour une nouvelle année.
