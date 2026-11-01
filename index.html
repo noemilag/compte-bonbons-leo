@@ -193,6 +193,7 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
 .hw-chart text.val{font-family:var(--chunky);font-weight:900;font-size:1.15rem;font-variant-numeric:tabular-nums}
 .hw-chart text.rider{font-size:20px}
 .hw-chart text.pct{font-family:var(--chunky);font-weight:900;font-size:.95rem;fill:#1a1020}
+.hw-chart text.pct-out{font-family:var(--chunky);font-weight:900;font-size:.95rem}
 .hw-chart text.dnum{font-family:var(--chunky);font-weight:900;font-size:2.6rem;fill:var(--orange);filter:drop-shadow(0 0 10px rgba(255,122,26,.6))}
 .hw-chart text.dlbl{fill:var(--ink-dim);font-weight:700}
 .hw-chart path{transition:opacity .15s}
@@ -921,19 +922,40 @@ window.hwDonut = (el, items, mode) => {
   el.replaceChildren();
   if (!items.length) return;
   const W = Math.max(240, Math.floor(el.clientWidth || 320));
-  const size = Math.min(W, 320);
-  const R = size / 2 - 10, r0 = R * 0.56;
+  const size = Math.min(W, 340);
+  const R = size / 2 - 34, r0 = R * 0.56;
+  const H = size + 16, cy = H / 2 + 8;
   const total = items.reduce((s, d) => s + d.value, 0);
-  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${size}`).attr('role', 'img').attr('aria-label', 'Part de chaque famille de bonbons');
-  const g = svg.append('g').attr('transform', `translate(${W / 2},${size / 2})`);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Part de chaque famille de bonbons');
+  const g = svg.append('g').attr('transform', `translate(${W / 2},${cy})`);
   const pie = d3.pie().value((d) => d.value).sort(null).padAngle(0.018);
   const arcs = pie(items);
   const arc = d3.arc().innerRadius(r0).outerRadius(R).cornerRadius(6);
   const slices = g.selectAll('path').data(arcs).join('path').style('fill', (a) => a.data.color).style('filter', (a) => hwGlow(a.data.color));
-  const labels = g.selectAll('text.pct').data(arcs.filter((a) => a.data.value / total >= 0.06)).join('text')
+  const pctText = (a) => Math.round(a.data.value / total * 100) + ' %';
+  const ang = (a) => (a.startAngle + a.endAngle) / 2;
+  /* Big slices: percentage inside. Small slices: outside, on a ring, with a short line. */
+  const inside = arcs.filter((a) => a.data.value / total >= 0.08);
+  const outside = arcs.filter((a) => a.data.value / total < 0.08);
+  const insideLbl = g.selectAll('text.pct').data(inside).join('text')
     .attr('class', 'pct').attr('text-anchor', 'middle').attr('dy', '0.35em')
     .attr('transform', (a) => `translate(${arc.centroid(a)})`)
-    .text((a) => Math.round(a.data.value / total * 100) + ' %');
+    .text(pctText);
+  const ro = R + 22;
+  const pos = outside.map((a) => ({a, x: Math.sin(ang(a)) * ro, y: -Math.cos(ang(a)) * ro}));
+  pos.sort((p, q) => p.x - q.x);
+  for (let k = 1; k < pos.length; k++) {
+    if (pos[k].x - pos[k - 1].x < 36 && Math.abs(pos[k].y - pos[k - 1].y) < 20) pos[k].x = pos[k - 1].x + 36;
+  }
+  const outG = g.selectAll('g.out').data(pos).join('g').attr('class', 'out');
+  outG.append('line')
+    .attr('x1', (p) => Math.sin(ang(p.a)) * (R + 3)).attr('y1', (p) => -Math.cos(ang(p.a)) * (R + 3))
+    .attr('x2', (p) => p.x).attr('y2', (p) => p.y + 5)
+    .style('stroke', (p) => p.a.data.color).style('stroke-width', 1.5).style('stroke-linecap', 'round');
+  outG.append('text').attr('class', 'pct-out').attr('text-anchor', 'middle').attr('x', (p) => p.x).attr('y', (p) => p.y)
+    .style('fill', (p) => p.a.data.color).style('filter', (p) => hwGlow(p.a.data.color))
+    .text((p) => pctText(p.a));
+  const labels = d3.selectAll([...insideLbl.nodes(), ...outG.nodes()]);
   const mid = g.append('text').attr('class', 'dnum').attr('text-anchor', 'middle').attr('dy', '0.1em');
   g.append('text').attr('class', 'dlbl').attr('text-anchor', 'middle').attr('y', R * 0.26).text('bonbons');
 
@@ -1233,7 +1255,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-10';
+  const APP_VERSION = '2026.11.01-11';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
