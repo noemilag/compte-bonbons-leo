@@ -440,7 +440,7 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
   <section class="hw-grid">
     <div class="hw-card hw-reveal" id="decompte">
       <h2>Le grimoire de Léo</h2>
-      <p class="note">Chaque ligne de la feuille de Léo. Touche un titre pour trier.</p>
+      <p class="note">Touche un titre de colonne pour trier.</p>
       <input class="hw-search" type="search" placeholder="🔮 Chercher un bonbon…" aria-label="Chercher un bonbon">
       <div class="hw-tablebox">
         <table class="hw-table" data-source="bonbons" data-row-key="annee,bonbon">
@@ -1255,7 +1255,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-11';
+  const APP_VERSION = '2026.11.01-12';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
