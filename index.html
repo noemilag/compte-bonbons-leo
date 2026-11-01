@@ -2,10 +2,20 @@
 <html lang="fr-CA">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Le butin hanté de Léo · Halloween 2026</title>
-<meta name="description" content="La récolte de bonbons d'Halloween 2026 de Léo, en chiffres et en graphiques.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Halloween Dashboard · Le butin hanté de Léo</title>
+<meta name="description" content="Les récoltes de bonbons d'Halloween de Léo, année après année, en chiffres et en graphiques.">
+<meta name="theme-color" content="#120724">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Halloween">
+<meta property="og:title" content="Halloween Dashboard · Le butin hanté de Léo">
+<meta property="og:image" content="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400..700&family=Luckiest+Guy&display=swap" rel="stylesheet">
 <style>
 :root{
   --cds-gap-xs:.25rem;--cds-gap-sm:.5rem;--cds-gap-md:1rem;--cds-gap-lg:1.5rem;--cds-gap-xl:2rem;
@@ -27,392 +37,57 @@ html,body{margin:0;padding:0;background:#05040a}
 <body>
 <div id="dash-root">
 <script>
-/* Petit moteur autonome : remplace l'environnement du tableau de bord Claude. */
+/* Petit moteur autonome : lit data/bonbons.csv et data/soirees.csv, puis dessine la page. */
 (function () {
-  const raw = {
- "bonbons": [
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Kit Kat",
-   "quantite": 12,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Whoppers",
-   "quantite": 12,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "M&M's",
-   "quantite": 4,
-   "gros": 1
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Reese's",
-   "quantite": 18,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Aero",
-   "quantite": 16,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Oh Henry!",
-   "quantite": 5,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Snickers",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Pokémon",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Coffee Crisp",
-   "quantite": 9,
-   "gros": 1
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Mars",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Hershey",
-   "quantite": 5,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Smarties",
-   "quantite": 16,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Twirl",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Wunderbar",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Chocolat",
-   "bonbon": "Twix",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "Doritos",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "BBQ",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "Ketchup",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "Sel",
-   "quantite": 9,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "Crottes",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Chips",
-   "bonbon": "All Dressed",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Suçons",
-   "quantite": 28,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Poudre",
-   "quantite": 4,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Guimauves",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Tootsie Roll",
-   "quantite": 9,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Caramels",
-   "quantite": 6,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Skittles",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Jolly Rancher",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Starburst",
-   "quantite": 10,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Bracelet",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Surettes",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Bonbons divers",
-   "quantite": 10,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Fizz",
-   "quantite": 46,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Rockets",
-   "quantite": 92,
-   "gros": 0
-  },
-  {
-   "categorie": "Bonbons durs",
-   "bonbon": "Popeye",
-   "quantite": 47,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Mini Oreo",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Carré Rice Krispies",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Gomme",
-   "quantite": 8,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Rouleaux aux fruits",
-   "quantite": 6,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Barre tendre",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Airheads",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Spécial",
-   "bonbon": "Collants",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Yeux",
-   "quantite": 30,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Araignées",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Jolly Rancher (jujube)",
-   "quantite": 2,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Pied",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Life Savers",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Pêches",
-   "quantite": 4,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Sour Patch",
-   "quantite": 3,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Framboises",
-   "quantite": 5,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Poissons",
-   "quantite": 4,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Fruits",
-   "quantite": 5,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Dots",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Suce",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Mike and Ike",
-   "quantite": 1,
-   "gros": 1
-  },
-  {
-   "categorie": "Jujubes",
-   "bonbon": "Gros bonbon",
-   "quantite": 1,
-   "gros": 1
-  },
-  {
-   "categorie": "Réglisse",
-   "bonbon": "Réglisse bleue",
-   "quantite": 1,
-   "gros": 0
-  },
-  {
-   "categorie": "Réglisse",
-   "bonbon": "Réglisse rouge",
-   "quantite": 10,
-   "gros": 0
-  }
- ],
- "soiree": [
-  {
-   "mesure": "heures_marche",
-   "valeur": 2
-  },
-  {
-   "mesure": "sacs_donnes",
-   "valeur": 50
-  }
- ]
-};
-  const store = {};
-  Object.entries(raw).forEach(([id, rows]) => { store[id] = {status: 'ok', data: rows, columns: Object.keys(rows[0] || {}), meta: [], refreshing: false}; });
-  const draws = new Map();
+  const store = {bonbons: {status: 'loading', data: [], meta: []}, soiree: {status: 'loading', data: [], meta: []}};
+  const calcs = new Map(), draws = new Map(), watchers = [];
+  const data = (id) => {
+    const c = calcs.get(id);
+    if (c) {
+      const ins = c.inputs.map(data);
+      const bad = ins.find((x) => x.status !== 'ok');
+      if (bad) return {status: bad.status, data: [], meta: []};
+      if (!c.cache) c.cache = {status: 'ok', data: c.fn(...ins.map((x) => x.data)), meta: []};
+      return c.cache;
+    }
+    return store[id] || {status: 'missing', data: [], meta: []};
+  };
   const run = (name) => {
     const fn = draws.get(name);
     if (!fn) return;
-    document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => { try { fn(el); } catch (e) { console.error(name, e); } });
+    document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => {
+      if (el.closest('[hidden]')) return;
+      try { fn(el); } catch (e) { console.error(name, e); }
+    });
   };
+  const runAll = () => { watchers.forEach((fn) => fn()); draws.forEach((fn, name) => run(name)); };
   window.dash = {
     colors: ['#ff7a1a', '#7cff4f', '#b46cff', '#ff4fa3', '#ffd60a', '#00e5ff', '#d4915b', '#ff4f6d'],
-    data: (id) => store[id] || {status: 'missing', data: [], meta: []},
-    calc: (id, {inputs, fn}) => { store[id] = {status: 'ok', data: fn(...inputs.map((i) => (store[i] || {data: []}).data)), meta: []}; },
+    data,
+    calc: (id, {inputs, fn}) => { calcs.set(id, {inputs, fn}); },
     draw: (name, fn) => { if (fn) draws.set(name, fn); else run(name); },
-    onData: (fn) => fn(),
+    onData: (fn) => { watchers.push(fn); },
     loader: () => {}, refresh: () => {}, params: () => ({}), setParams: () => {}, resetParams: () => {}, setLink: () => {}
   };
-  window.__dashRunAll = () => draws.forEach((fn, name) => run(name));
-  let lastW = window.innerWidth, t;
-  window.addEventListener('resize', () => {
-    clearTimeout(t);
-    t = setTimeout(() => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; window.__dashRunAll(); } }, 200);
-  });
+  window.__dashStart = () => {
+    runAll();
+    Promise.all([d3.csv('data/bonbons.csv'), d3.csv('data/soirees.csv')]).then(([b, s]) => {
+      store.bonbons = {status: 'ok', data: b, columns: b.columns, meta: []};
+      store.soiree = {status: 'ok', data: s, columns: s.columns, meta: []};
+      calcs.forEach((c) => { c.cache = null; });
+      runAll();
+    }).catch((e) => {
+      console.error(e);
+      store.bonbons = {status: 'error', data: [], meta: []};
+      store.soiree = {status: 'error', data: [], meta: []};
+      runAll();
+    });
+    let lastW = window.innerWidth, t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(() => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; runAll(); } }, 200);
+    });
+  };
 })();
 </script>
 <style>
@@ -591,7 +266,8 @@ html,body{margin:0;padding:0;background:#05040a}
 @keyframes hw-fireflick{from{opacity:.75}to{opacity:1}}
 @keyframes hw-bubble{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-40px);opacity:0}}
 @keyframes hw-boo{0%{transform:scale(.3) rotate(-10deg);opacity:0}70%{transform:scale(1.25) rotate(4deg);opacity:1}100%{transform:scale(1)}}
-@media (max-width:560px){.hw-moon{width:4.5rem;height:4.5rem;top:5%;opacity:.8}.hw-ghost{right:8%}.hw-spider{left:78%}}
+@media (max-width:560px){.hw-moon{width:4.5rem;height:4.5rem;top:5%;opacity:.8}.hw-ghost{right:24%;bottom:2.5rem;font-size:2.2rem}.hw-spider{left:78%}}
+#dash-root .hw [hidden]{display:none !important}
 
 /* Centered titles */
 .hw-hero{text-align:center}
@@ -600,10 +276,28 @@ html,body{margin:0;padding:0;background:#05040a}
 .hw-chapter.hw-hide{transform:translateY(30px)}
 .hw-card h2,.hw-card .note{text-align:center}
 .hw-card .note{max-width:28rem;margin-inline:auto}
+
+/* Title in two parts */
+.hw-hero h1 .l0{display:block;font-size:.42em;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);text-shadow:0 3px 0 #2a0f4a,0 0 18px rgba(180,108,255,.6);margin-bottom:.25em}
+/* Year picker */
+.hw-years{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--cds-gap-sm);margin-top:var(--cds-gap-lg)}
+.hw-years button{all:unset;cursor:pointer;font-family:var(--chunky);font-weight:900;font-size:1.15rem;letter-spacing:.04em;padding:.35em 1.1em;border-radius:999px;background:rgba(10,4,20,.55);color:var(--ink-dim);box-shadow:inset 0 0 0 1px rgba(255,122,26,.45)}
+.hw-years button[aria-pressed=true]{background:var(--orange);color:#2a0d00;box-shadow:0 0 20px rgba(255,122,26,.7)}
+.hw-years button:focus-visible{outline:2px solid var(--candle);outline-offset:2px}
+/* Change vs the year before */
+.hw-delta{font-weight:800;font-size:var(--cds-font-size-caption);padding:.15em .7em;border-radius:999px;background:rgba(0,0,0,.35);font-variant-numeric:tabular-nums}
+.hw-delta:empty{display:none}
+.hw-delta.up{color:var(--slime)}
+.hw-delta.down{color:var(--pink)}
+.hw-delta.same{color:var(--ink-dim)}
+/* Waiting for next year */
+.hw-wait{align-items:center;text-align:center;padding:var(--cds-pad-xl)}
+.hw-wait .ball{width:5.5rem;height:5.5rem;filter:drop-shadow(0 0 18px rgba(180,108,255,.7))}
+.hw-wait p{font-size:var(--cds-font-size-heading);max-width:32rem;margin:0 auto;color:var(--ink)}
 </style>
 
 <div class="hw">
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="hw-wobble" x="-5%" y="-15%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="hw-wobble" x="-5%" y="-15%" width="110%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3"/></filter></svg>
   <header class="hw-hero" id="resume">
     <div class="hw-moon" aria-hidden="true"></div>
     <div class="hw-bats" aria-hidden="true"><span>🦇</span><span>🦇</span><span>🦇</span></div>
@@ -634,9 +328,9 @@ html,body{margin:0;padding:0;background:#05040a}
       <text class="pk" x="720" y="120">🎃</text>
     </svg>
     <div class="hw-fog" aria-hidden="true"></div>
-    <p class="hw-kicker">Halloween 2026 · le grand bilan</p>
-    <h1>Le butin hanté <span class="l2">de Léo</span></h1>
-    <p class="say">Après <b data-draw="heures-inline" data-source="totaux" data-field="heures" class="dash-skeleton">—</b> heures à cogner aux portes, Léo est rentré avec <b data-draw="total-inline" data-source="totaux" data-field="total" class="dash-skeleton">—</b> bonbons! Ça fait <b data-draw="minute" data-source="totaux" data-field="parMinute" class="dash-skeleton">—</b> bonbons par minute. Le roi de la nuit : les <b data-draw="champion" data-source="totaux" data-field="champion" class="dash-skeleton">—</b>, avec <b data-draw="champion-qte" data-source="totaux" data-field="championQte" class="dash-skeleton">—</b> morceaux.</p>
+    <h1><span class="l0">Halloween Dashboard</span>Le butin hanté <span class="l2">de Léo</span></h1>
+    <p class="say">En <b data-draw="annee-inline" data-source="totaux" data-field="annee" class="dash-skeleton">—</b>, après <b data-draw="heures-inline" data-source="totaux" data-field="heures" class="dash-skeleton">—</b> heures à cogner aux portes, Léo est rentré avec <b data-draw="total-inline" data-source="totaux" data-field="total" class="dash-skeleton">—</b> bonbons! Ça fait <b data-draw="minute" data-source="totaux" data-field="parMinute" class="dash-skeleton">—</b> bonbons par minute. Le roi de la nuit : les <b data-draw="champion" data-source="totaux" data-field="champion" class="dash-skeleton">—</b>, avec <b data-draw="champion-qte" data-source="totaux" data-field="championQte" class="dash-skeleton">—</b> morceaux.</p>
+    <div class="hw-years" data-draw="years" data-source="totaux" role="group" aria-label="Choisir l’année"></div>
   </header>
 
   <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 21 Q6 8 24 8 Q42 8 42 21 Z" fill="#c8682a"/><circle cx="16" cy="14" r="3.5" fill="#7cff4f"/><circle cx="24" cy="11" r="3.5" fill="#ff4fa3"/><circle cx="32" cy="14" r="3.5" fill="#b46cff"/><rect x="6" y="21" width="36" height="20" rx="3" fill="#8f4417"/><rect x="6" y="19" width="36" height="5" fill="#ffd60a"/><rect x="20.5" y="19" width="7" height="11" rx="2" fill="#ffd60a"/><circle cx="24" cy="25.5" r="1.6" fill="#5a2a0c"/></svg><div><span class="k">Chapitre 1</span><h3>Le trésor de la nuit</h3></div></div>
@@ -645,30 +339,35 @@ html,body{margin:0;padding:0;background:#05040a}
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 24 L4 14 L4 34 Z" fill="#ffb066"/><path d="M33 24 L44 14 L44 34 Z" fill="#ffb066"/><circle cx="24" cy="24" r="12" fill="#ff7a1a"/><path d="M16 16 Q22 22 20 33" stroke="#ffd2a6" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 12.5 Q31 20 29 35" stroke="#ffd2a6" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
       <span class="lbl">Bonbons ramassés</span>
       <b class="num dash-skeleton" data-draw="total" data-source="totaux" data-field="total">—</b>
+      <span class="hw-delta" data-draw="d-total" data-source="totaux" data-field="d_total"></span>
       <span class="note">Le grand total!</span>
     </div>
     <div class="hw-tile hw-reveal">
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="25" r="18" fill="#163a10"/><circle cx="24" cy="25" r="18" fill="none" stroke="#7cff4f" stroke-width="3.5"/><rect x="20" y="2" width="8" height="5" rx="2" fill="#7cff4f"/><g fill="#7cff4f"><circle cx="24" cy="11" r="1.8"/><circle cx="38" cy="25" r="1.8"/><circle cx="24" cy="39" r="1.8"/><circle cx="10" cy="25" r="1.8"/></g><path d="M24 15 V25 L31 30" stroke="#d6ffc4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="24" cy="25" r="2.8" fill="#7cff4f"/></svg>
       <span class="lbl">Bonbons à l'heure</span>
       <b class="num dash-skeleton" data-draw="heure" data-source="totaux" data-field="parHeure">—</b>
+      <span class="hw-delta" data-draw="d-heure" data-source="totaux" data-field="d_parHeure"></span>
       <span class="note">Rapide comme un balai de sorcière</span>
     </div>
     <div class="hw-tile hw-reveal">
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><line x1="14" y1="24" x2="14" y2="44" stroke="#8a6ab8" stroke-width="3" stroke-linecap="round"/><circle cx="14" cy="16" r="10" fill="#b46cff"/><path d="M14 16 m-5 0 a5 5 0 1 0 5 -5" stroke="#e2c8ff" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="35" cy="13" r="7" fill="#ff4fa3"/><circle cx="33" cy="11" r="2" fill="#ffc2e0"/><path d="M26 35 L20 30 L20 40 Z" fill="#ffe680"/><path d="M38 35 L44 30 L44 40 Z" fill="#ffe680"/><circle cx="32" cy="35" r="7" fill="#ffd60a"/></svg>
       <span class="lbl">Sortes différentes</span>
       <b class="num dash-skeleton" data-draw="sortes" data-source="totaux" data-field="sortes">—</b>
+      <span class="hw-delta" data-draw="d-sortes" data-source="totaux" data-field="d_sortes"></span>
       <span class="note">Un vrai festin de sorcière</span>
     </div>
     <div class="hw-tile hw-reveal">
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="19" cy="13" r="5" fill="#ffd60a"/><circle cx="28" cy="11" r="5" fill="#7cff4f"/><path d="M10 16 H38 L41 40 Q41 44 37 44 H11 Q7 44 7 40 Z" fill="#ff4fa3"/><path d="M10 16 H38 L38.5 20 H9.5 Z" fill="#c2287a"/><path d="M24 24 l2.2 4.6 5 .7 -3.6 3.5 .9 5 -4.5 -2.4 -4.5 2.4 .9 -5 -3.6 -3.5 5 -.7 Z" fill="#ffd1e8"/></svg>
       <span class="lbl">Ramassés par sac donné</span>
       <b class="num dash-skeleton" data-draw="ratio" data-source="totaux" data-field="ratio">—</b>
+      <span class="hw-delta" data-draw="d-ratio" data-source="totaux" data-field="d_ratio"></span>
       <span class="note">On a donné <b data-draw="sacs" data-source="totaux" data-field="sacs" class="dash-skeleton">—</b> sacs à la porte</span>
     </div>
     <div class="hw-tile hw-reveal">
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="12" width="40" height="26" rx="4" fill="#6b3410"/><g fill="#9c5221"><rect x="6" y="15" width="8" height="9" rx="1.5"/><rect x="16" y="15" width="8" height="9" rx="1.5"/><rect x="6" y="26" width="8" height="9" rx="1.5"/><rect x="16" y="26" width="8" height="9" rx="1.5"/></g><path d="M27 10 H45 V40 H27 L29.5 35 L27 30 L29.5 25 L27 20 L29.5 15 Z" fill="#ffd60a"/><text x="37" y="29" text-anchor="middle" font-size="10" font-weight="900" fill="#6b3410" font-family="sans-serif">XL</text></svg>
       <span class="lbl">Formats monstres</span>
       <b class="num dash-skeleton" data-draw="gros" data-source="totaux" data-field="gros">—</b>
+      <span class="hw-delta" data-draw="d-gros" data-source="totaux" data-field="d_gros"></span>
       <span class="note">Les « gros » de Léo</span>
     </div>
   </section>
@@ -713,7 +412,7 @@ html,body{margin:0;padding:0;background:#05040a}
       <p class="note">Chaque ligne de la feuille de Léo. Touche un titre pour trier.</p>
       <input class="hw-search" type="search" placeholder="🔮 Chercher un bonbon…" aria-label="Chercher un bonbon">
       <div class="hw-tablebox">
-        <table class="hw-table" data-source="bonbons" data-row-key="bonbon">
+        <table class="hw-table" data-source="bonbons" data-row-key="annee,bonbon">
           <thead><tr>
             <th data-field="bonbon"><button class="hw-sort" data-key="bonbon">Bonbon</button></th>
             <th data-field="categorie"><button class="hw-sort" data-key="categorie">Famille</button></th>
@@ -725,6 +424,27 @@ html,body{margin:0;padding:0;background:#05040a}
     </div>
   </section>
 
+  <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="#2a1645"/><rect x="6" y="10" width="36" height="10" rx="4" fill="#ff7a1a"/><rect x="6" y="16" width="36" height="4" fill="#ff7a1a"/><rect x="14" y="5" width="4" height="10" rx="2" fill="#ffd60a"/><rect x="30" y="5" width="4" height="10" rx="2" fill="#ffd60a"/><rect x="12" y="30" width="7" height="8" rx="1.5" fill="#b46cff"/><rect x="21" y="25" width="7" height="13" rx="1.5" fill="#ff7a1a"/><rect x="30" y="22" width="7" height="16" rx="1.5" fill="#7cff4f"/></svg><div><span class="k">Chapitre 5</span><h3>D’une année à l’autre</h3></div></div>
+  <section class="hw-grid hw-compare-wait">
+    <div class="hw-card hw-wait hw-reveal">
+      <svg class="ball" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="28" r="21" fill="#3d1c66"/><circle cx="32" cy="28" r="21" fill="none" stroke="#b46cff" stroke-width="2.5"/><ellipse cx="25" cy="20" rx="6" ry="3.5" fill="#d9c4ff" opacity=".45" transform="rotate(-30 25 20)"/><path d="M34 22 l1.6 3.4 3.7.5 -2.7 2.6 .7 3.7 -3.3 -1.8 -3.3 1.8 .7 -3.7 -2.7 -2.6 3.7 -.5 Z" fill="#ffd60a"/><circle cx="41" cy="33" r="1.6" fill="#7cff4f"/><circle cx="24" cy="35" r="1.3" fill="#ff7a1a"/><path d="M18 46 H46 L50 58 H14 Z" fill="#8f4417"/><rect x="12" y="56" width="40" height="5" rx="2" fill="#5a2a0c"/></svg>
+      <h2>La suite l’an prochain!</h2>
+      <p>Garde ta feuille de décompte : à la prochaine Halloween, on ajoute la nouvelle récolte et les années se comparent ici, côte à côte.</p>
+    </div>
+  </section>
+  <section class="hw-grid hw-compare" hidden>
+    <div class="hw-card hw-reveal" id="comparaison">
+      <h2>Le total de chaque année</h2>
+      <p class="note">Quelle Halloween a été la plus payante?</p>
+      <div class="hw-chart tall dash-skeleton" data-draw="cmp-total" data-source="totaux"></div>
+    </div>
+    <div class="hw-card hw-reveal" id="comparaison-familles">
+      <h2>Les familles, année par année</h2>
+      <p class="note">Chaque couleur, c’est une année.</p>
+      <div class="hw-chart dash-skeleton" data-draw="cmp-cat" data-source="categories"></div>
+    </div>
+  </section>
+
   <p class="hw-end hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7 Q22 2 27 1" stroke="#3fbf2a" stroke-width="3.5" fill="none" stroke-linecap="round"/><ellipse cx="15" cy="27" rx="10" ry="15" fill="#e2611a"/><ellipse cx="33" cy="27" rx="10" ry="15" fill="#e2611a"/><ellipse cx="24" cy="27" rx="11" ry="17" fill="#ff7a1a"/><path d="M15 22 l4 -4 4 4 Z M25 22 l4 -4 4 4 Z" fill="#ffd60a"/><path d="M13 30 Q24 40 35 30 L31 32 L28 29 L24 33 L20 29 L17 32 Z" fill="#ffd60a"/></svg>Joyeuse Halloween, Léo! Garde-en pour demain…</p>
 </div>
 
@@ -733,12 +453,21 @@ window.hwFmt = new Intl.NumberFormat('fr-CA');
 window.hwDec = new Intl.NumberFormat('fr-CA', {maximumFractionDigits: 1});
 window.hwPct = new Intl.NumberFormat('fr-CA', {style: 'percent', maximumFractionDigits: 1});
 const CAT_COLORS = {'Bonbons durs': '#ff7a1a', 'Chocolat': '#d4915b', 'Jujubes': '#7cff4f', 'Spécial': '#b46cff', 'Chips': '#ffd60a', 'Réglisse': '#ff4f6d'};
-const CAT_EMOJI = {'Bonbons durs': '🍭', 'Chocolat': '🍫', 'Jujubes': '🍬', 'Spécial': '⭐', 'Chips': '🥔', 'Réglisse': '🍒'};
-window.hwColor = (c) => CAT_COLORS[c] || '#ff7a1a';
-window.hwEmoji = (c) => CAT_EMOJI[c] || '🍬';
+window.hwColor = (c) => CAT_COLORS[c] || '#00e5ff';
+const YEAR_COLORS = ['#b46cff', '#ff7a1a', '#7cff4f', '#00e5ff', '#ffd60a', '#ff4fa3'];
 window.hwGlow = (c) => `drop-shadow(0 0 6px ${c})`;
 window.hwMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
 window.hwUid = 0;
+
+/* The year being shown. Defaults to the most recent year in the data. */
+window.hwYear = null;
+window.hwSelYear = (tot) => {
+  const ys = tot.map((r) => String(r.annee));
+  if (!ys.includes(hwYear)) hwYear = ys[ys.length - 1] || null;
+  return hwYear;
+};
+window.hwYearColor = (y, ys) => YEAR_COLORS[Math.max(0, ys.indexOf(String(y))) % YEAR_COLORS.length];
+window.hwOfYear = (rows) => rows.filter((r) => String(r.annee) === hwYear);
 
 /* Scroll reveal: a drawing waits at "zero" until it scrolls into view, animates once, then stays drawn. */
 window.hwRevealed = new Set();
@@ -769,44 +498,68 @@ if (hwMotion && typeof IntersectionObserver !== 'undefined') {
 }
 
 dash.calc('totaux', {
-  title: 'Statistiques de la soirée',
-  description: 'Total récolté, bonbons à l’heure et à la minute, sortes, formats géants, bonbons récoltés par sac donné et bonbon le plus nombreux.',
+  title: 'Statistiques de chaque année',
+  description: 'Pour chaque année : total, bonbons à l’heure et à la minute, sortes, formats géants, bonbons récoltés par sac donné, bonbon champion et écart avec l’année d’avant.',
   inputs: ['bonbons', 'soiree'],
   fn: (bonbons, soiree) => {
     const q = (r) => Number(r.quantite);
-    const total = bonbons.reduce((s, r) => s + q(r), 0);
-    const v = (k) => Number((soiree.find((r) => r.mesure === k) || {}).valeur);
-    const heures = v('heures_marche');
-    const sacs = v('sacs_donnes');
-    const top = bonbons.slice().sort((a, b) => q(b) - q(a))[0] || {};
-    return [{
-      total, heures, sacs,
-      sortes: bonbons.length,
-      parHeure: Math.round(total / heures),
-      parMinute: Math.round(total / (heures * 60) * 10) / 10,
-      ratio: Math.round(total / sacs * 10) / 10,
-      gros: bonbons.reduce((s, r) => s + Number(r.gros), 0),
-      champion: top.bonbon,
-      championQte: q(top)
-    }];
+    const years = [...new Set(bonbons.map((r) => String(r.annee)))].sort();
+    let prev = null;
+    return years.map((y) => {
+      const rows = bonbons.filter((r) => String(r.annee) === y);
+      const v = (k) => { const m = soiree.find((r) => String(r.annee) === y && r.mesure === k); return m ? Number(m.valeur) : null; };
+      const total = rows.reduce((s, r) => s + q(r), 0);
+      const heures = v('heures_marche');
+      const sacs = v('sacs_donnes');
+      const top = rows.slice().sort((a, b) => q(b) - q(a))[0] || {};
+      const o = {
+        annee: y, total, heures, sacs,
+        sortes: rows.length,
+        parHeure: heures ? Math.round(total / heures) : null,
+        parMinute: heures ? Math.round(total / (heures * 60) * 10) / 10 : null,
+        ratio: sacs ? Math.round(total / sacs * 10) / 10 : null,
+        gros: rows.reduce((s, r) => s + Number(r.gros || 0), 0),
+        champion: top.bonbon, championQte: q(top),
+        anneePrec: prev ? prev.annee : null
+      };
+      ['total', 'parHeure', 'sortes', 'ratio', 'gros'].forEach((k) => {
+        o['d_' + k] = prev && o[k] != null && prev[k] != null ? Math.round((o[k] - prev[k]) * 10) / 10 : null;
+      });
+      prev = o;
+      return o;
+    });
   }
 });
 
 dash.calc('categories', {
-  title: 'Bonbons par catégorie',
-  description: 'Somme des quantités par catégorie de Léo, avec le nombre de sortes et la part de la récolte.',
+  title: 'Bonbons par catégorie et par année',
+  description: 'Pour chaque année, somme des quantités par catégorie de Léo, avec le nombre de sortes et la part de la récolte de l’année.',
   inputs: ['bonbons'],
   fn: (bonbons) => {
-    const total = bonbons.reduce((s, r) => s + Number(r.quantite), 0);
-    const m = new Map();
-    bonbons.forEach((r) => {
-      const c = m.get(r.categorie) || {categorie: r.categorie, quantite: 0, sortes: 0};
-      c.quantite += Number(r.quantite);
-      c.sortes += 1;
-      m.set(r.categorie, c);
+    const out = [];
+    const years = [...new Set(bonbons.map((r) => String(r.annee)))].sort();
+    years.forEach((y) => {
+      const rows = bonbons.filter((r) => String(r.annee) === y);
+      const total = rows.reduce((s, r) => s + Number(r.quantite), 0);
+      const m = new Map();
+      rows.forEach((r) => {
+        const c = m.get(r.categorie) || {annee: y, categorie: r.categorie, quantite: 0, sortes: 0};
+        c.quantite += Number(r.quantite);
+        c.sortes += 1;
+        m.set(r.categorie, c);
+      });
+      [...m.values()].sort((a, b) => b.quantite - a.quantite).forEach((c) => out.push({...c, part: c.quantite / total}));
     });
-    return [...m.values()].map((c) => ({...c, part: c.quantite / total})).sort((a, b) => b.quantite - a.quantite);
+    return out;
   }
+});
+
+/* Show the comparison chapter once there are two years or more. */
+dash.onData(() => {
+  const d = dash.data('totaux');
+  const n = d.status === 'ok' ? d.data.length : 0;
+  document.querySelectorAll('.hw-compare').forEach((e) => { e.hidden = n < 2; });
+  document.querySelectorAll('.hw-compare-wait').forEach((e) => { e.hidden = n >= 2; });
 });
 
 window.hwState = (el, d) => {
@@ -907,7 +660,7 @@ window.hwBars = (el, items, aria, mode, rider) => {
 };
 
 /* Text figures count up when they scroll into view. */
-const textDraw = (name, field, fmt, decimals) => dash.draw(name, (el) => {
+const textDraw = (name, field, fmt, decimals, still) => dash.draw(name, (el) => {
   const d = dash.data('totaux');
   if (d.status !== 'ok') {
     if (d.status !== 'loading') el.classList.remove('dash-skeleton');
@@ -915,9 +668,12 @@ const textDraw = (name, field, fmt, decimals) => dash.draw(name, (el) => {
     return;
   }
   el.classList.remove('dash-skeleton');
-  const row = d.data[0];
+  const y = hwSelYear(d.data);
+  el.dataset.where = 'annee=' + y;
+  const row = d.data.find((r) => r.annee === y);
   const v = row ? row[field] : null;
   if (v == null) { el.textContent = '—'; return; }
+  if (still) { el.textContent = fmt(v); return; }
   if (typeof v !== 'number') {
     hwReveal('t-' + name, el, (mode) => {
       el.textContent = mode === 'zero' ? '???' : fmt(v);
@@ -936,6 +692,7 @@ const textDraw = (name, field, fmt, decimals) => dash.draw(name, (el) => {
       .on('end', () => { el.textContent = fmt(v); el.classList.remove('hw-boo'); void el.offsetWidth; el.classList.add('hw-boo'); });
   });
 });
+textDraw('annee-inline', 'annee', (v) => String(v), false, true);
 textDraw('total', 'total', (v) => hwFmt.format(v));
 textDraw('total-inline', 'total', (v) => hwFmt.format(v));
 textDraw('heures-inline', 'heures', (v) => hwDec.format(v));
@@ -947,6 +704,50 @@ textDraw('sortes', 'sortes', (v) => hwFmt.format(v));
 textDraw('ratio', 'ratio', (v) => hwDec.format(v), true);
 textDraw('sacs', 'sacs', (v) => hwFmt.format(v));
 textDraw('gros', 'gros', (v) => hwFmt.format(v));
+
+/* Change from the year before, under each tile (empty the first year). */
+const deltaDraw = (name, field, fmt) => dash.draw(name, (el) => {
+  const d = dash.data('totaux');
+  el.classList.remove('up', 'down', 'same');
+  if (d.status !== 'ok') { el.textContent = ''; return; }
+  const y = hwSelYear(d.data);
+  el.dataset.where = 'annee=' + y;
+  const row = d.data.find((r) => r.annee === y);
+  const v = row ? row['d_' + field] : null;
+  if (v == null) { el.textContent = ''; return; }
+  el.classList.add(v > 0 ? 'up' : v < 0 ? 'down' : 'same');
+  el.textContent = (v > 0 ? '▲ +' : v < 0 ? '▼ −' : '= ') + fmt(Math.abs(v)) + ' vs ' + row.anneePrec;
+});
+deltaDraw('d-total', 'total', (v) => hwFmt.format(v));
+deltaDraw('d-heure', 'parHeure', (v) => hwFmt.format(v));
+deltaDraw('d-sortes', 'sortes', (v) => hwFmt.format(v));
+deltaDraw('d-ratio', 'ratio', (v) => hwDec.format(v));
+deltaDraw('d-gros', 'gros', (v) => hwFmt.format(v));
+
+/* Year picker: one button per year in the data. */
+window.HW_DRAWS = ['years', 'annee-inline', 'total', 'total-inline', 'heures-inline', 'minute', 'champion', 'champion-qte', 'heure', 'sortes', 'ratio', 'sacs', 'gros',
+  'd-total', 'd-heure', 'd-sortes', 'd-ratio', 'd-gros', 'podium', 'bocal', 'chart-cat', 'chart-top', 'chart-choco', 'table-body', 'cmp-total', 'cmp-cat'];
+window.hwSetYear = (y) => {
+  if (y === hwYear) return;
+  hwYear = y;
+  hwRevealed.clear();
+  hwObs.forEach((o) => o.disconnect());
+  hwObs.clear();
+  HW_DRAWS.forEach((n) => dash.draw(n));
+};
+dash.draw('years', (el) => {
+  const d = dash.data('totaux');
+  if (d.status !== 'ok') { el.replaceChildren(); return; }
+  const y = hwSelYear(d.data);
+  el.replaceChildren(...d.data.map((r) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = r.annee;
+    b.setAttribute('aria-pressed', r.annee === y ? 'true' : 'false');
+    b.addEventListener('click', () => hwSetYear(r.annee));
+    return b;
+  }));
+});
 
 /* Haunted podium: three tombstones rise from the ground. */
 window.hwPodium = (el, top, mode) => {
@@ -1004,8 +805,10 @@ window.hwPodium = (el, top, mode) => {
 
 dash.draw('podium', (el) => {
   const d = dash.data('bonbons');
-  if (!hwState(el, d)) return;
-  const top = d.data.slice().sort((a, b) => Number(b.quantite) - Number(a.quantite)).slice(0, 3);
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const top = hwOfYear(d.data).sort((a, b) => Number(b.quantite) - Number(a.quantite)).slice(0, 3);
   if (!top.length) { el.replaceChildren(); return; }
   hwReveal('podium', el, (mode) => hwPodium(el, top, mode));
 });
@@ -1076,14 +879,19 @@ window.hwCauldron = (el, cats, mode) => {
 
 dash.draw('bocal', (el) => {
   const d = dash.data('categories');
-  if (!hwState(el, d)) return;
-  hwReveal('bocal', el, (mode) => hwCauldron(el, d.data, mode));
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const cats = hwOfYear(d.data);
+  hwReveal('bocal', el, (mode) => hwCauldron(el, cats, mode));
 });
 
 dash.draw('chart-cat', (el) => {
   const d = dash.data('categories');
-  if (!hwState(el, d)) return;
-  const items = d.data.map((r) => ({
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const items = hwOfYear(d.data).map((r) => ({
     label: r.categorie, value: r.quantite, color: hwColor(r.categorie),
     sub: hwPct.format(r.part) + ' de la récolte · ' + r.sortes + ' sortes'
   }));
@@ -1092,16 +900,20 @@ dash.draw('chart-cat', (el) => {
 
 dash.draw('chart-top', (el) => {
   const d = dash.data('bonbons');
-  if (!hwState(el, d)) return;
-  const items = d.data.slice().sort((a, b) => Number(b.quantite) - Number(a.quantite)).slice(0, 12)
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const items = hwOfYear(d.data).sort((a, b) => Number(b.quantite) - Number(a.quantite)).slice(0, 12)
     .map((r) => ({label: r.bonbon, value: Number(r.quantite), color: hwColor(r.categorie), sub: r.categorie}));
   hwReveal('chart-top', el, (mode) => hwBars(el, items, 'Bonbons les plus nombreux', mode, '👻'));
 });
 
 dash.draw('chart-choco', (el) => {
   const d = dash.data('bonbons');
-  if (!hwState(el, d)) return;
-  const rows = d.data.filter((r) => r.categorie === 'Chocolat').sort((a, b) => Number(b.quantite) - Number(a.quantite));
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const rows = hwOfYear(d.data).filter((r) => r.categorie === 'Chocolat').sort((a, b) => Number(b.quantite) - Number(a.quantite));
   const tot = rows.reduce((s, r) => s + Number(r.quantite), 0);
   const items = rows.map((r) => ({
     label: r.bonbon, value: Number(r.quantite), color: hwColor('Chocolat'),
@@ -1110,18 +922,124 @@ dash.draw('chart-choco', (el) => {
   hwReveal('chart-choco', el, (mode) => hwBars(el, items, 'Sortes de chocolat', mode, '🦇'));
 });
 
+/* ---------- Year-over-year comparison ---------- */
+window.hwColumns = (el, items, mode) => {
+  el.replaceChildren();
+  if (!items.length) return;
+  const W = Math.max(240, Math.floor(el.clientWidth || 320));
+  const H = 260, top = 40, bottom = 34;
+  const x = d3.scaleBand(items.map((d) => d.label), [8, W - 8]).padding(0.35);
+  const y = d3.scaleLinear([0, d3.max(items, (d) => d.value) || 1], [H - bottom, top]);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Total de bonbons par année');
+  svg.append('line').attr('x1', 0).attr('x2', W).attr('y1', H - bottom).attr('y2', H - bottom).style('stroke', 'rgba(124,255,79,.5)').style('stroke-width', 2);
+  const g = svg.selectAll('g.c').data(items).join('g').attr('class', 'c');
+  const bar = g.append('rect').attr('x', (d) => x(d.label)).attr('width', x.bandwidth()).attr('rx', Math.min(12, x.bandwidth() / 4))
+    .style('fill', (d) => d.color).style('filter', (d) => hwGlow(d.color));
+  const val = g.append('text').attr('class', 'val').attr('text-anchor', 'middle').attr('x', (d) => x(d.label) + x.bandwidth() / 2).style('fill', (d) => d.color);
+  g.append('text').attr('class', 'lbl').attr('text-anchor', 'middle').attr('x', (d) => x(d.label) + x.bandwidth() / 2).attr('y', H - bottom + 24).text((d) => d.label);
+  const done = () => {
+    bar.attr('y', (d) => y(d.value)).attr('height', (d) => H - bottom - y(d.value));
+    val.attr('y', (d) => y(d.value) - 10).text((d) => hwFmt.format(d.value)).style('opacity', 1);
+  };
+  if (mode === 'static') done();
+  else {
+    bar.attr('y', H - bottom).attr('height', 0);
+    val.attr('y', H - bottom - 10).text('0').style('opacity', 0);
+    if (mode === 'animate') {
+      const delay = (d, i) => 150 + i * 300;
+      bar.transition().delay(delay).duration(1200).ease(d3.easeBackOut.overshoot(1.2)).attr('y', (d) => y(d.value)).attr('height', (d) => H - bottom - y(d.value));
+      val.transition().delay(delay).duration(1200).ease(d3.easeBackOut.overshoot(1.2)).attr('y', (d) => y(d.value) - 10).style('opacity', 1)
+        .tween('text', function (d) { const i = d3.interpolateNumber(0, d.value); const n = this; return (t) => { n.textContent = hwFmt.format(Math.max(0, Math.round(i(Math.min(t, 1))))); }; })
+        .on('end', function (d) { this.textContent = hwFmt.format(d.value); });
+    }
+  }
+  const tip = hwTip(el);
+  g.on('pointerenter pointermove', (ev, d) => tip.show(ev, [['t1', d.label], ['t2', hwUnits(d.value)], d.sub && ['t3', d.sub]]))
+    .on('pointerleave', () => tip.hide());
+};
+
+window.hwGrouped = (el, cats, years, val, mode) => {
+  el.replaceChildren();
+  if (!cats.length) return;
+  const W = Math.max(240, Math.floor(el.clientWidth || 320));
+  const barH = 14, gap = 4, groupGap = 16;
+  const groupH = years.length * (barH + gap) - gap;
+  const H = cats.length * (groupH + groupGap);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Bonbons par famille, année par année');
+  const measure = (cls, txt) => { const t = svg.append('text').attr('class', cls).text(txt); const w = t.node().getComputedTextLength(); t.remove(); return w; };
+  const labelW = Math.min(d3.max(cats, (c) => measure('lbl', c)) || 0, W * 0.4);
+  const x0 = labelW + 12;
+  const max = d3.max(cats, (c) => d3.max(years, (y) => val(c, y))) || 1;
+  const x = d3.scaleLinear([0, max], [0, Math.max(10, W - x0 - 46)]);
+  const rows = [];
+  cats.forEach((c, ci) => years.forEach((y, yi) => rows.push({c, y, v: val(c, y), top: ci * (groupH + groupGap) + yi * (barH + gap), i: rows.length})));
+  svg.selectAll('text.lbl').data(cats).join('text').attr('class', 'lbl').attr('text-anchor', 'end').attr('x', labelW)
+    .attr('y', (c, ci) => ci * (groupH + groupGap) + groupH / 2).attr('dy', '0.35em').text((c) => c);
+  const g = svg.selectAll('g.r').data(rows).join('g').attr('class', 'r').attr('transform', (r) => `translate(0,${r.top})`);
+  const bars = g.append('rect').attr('x', x0).attr('height', barH).attr('rx', barH / 2).style('fill', (r) => hwYearColor(r.y, years)).style('filter', (r) => hwGlow(hwYearColor(r.y, years)));
+  const vals = g.append('text').attr('class', 'val').attr('y', barH / 2).attr('dy', '0.35em').style('font-size', '.9rem').style('fill', (r) => hwYearColor(r.y, years));
+  const w = (r) => Math.max(3, x(r.v));
+  if (mode === 'static') {
+    bars.attr('width', w);
+    vals.attr('x', (r) => x0 + w(r) + 6).text((r) => hwFmt.format(r.v));
+  } else {
+    bars.attr('width', 3);
+    vals.attr('x', x0 + 9).text('').style('opacity', 0);
+    if (mode === 'animate') {
+      const delay = (r) => 100 + r.i * 60;
+      bars.transition().delay(delay).duration(900).ease(d3.easeCubicOut).attr('width', w);
+      vals.transition().delay(delay).duration(900).ease(d3.easeCubicOut).attr('x', (r) => x0 + w(r) + 6).style('opacity', 1).text((r) => hwFmt.format(r.v));
+    }
+  }
+  const leg = document.createElement('div');
+  leg.className = 'hw-legend';
+  years.forEach((y) => {
+    const it = document.createElement('span'); it.className = 'it';
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = hwYearColor(y, years); sw.style.boxShadow = `0 0 8px ${hwYearColor(y, years)}`;
+    const nm = document.createElement('span'); nm.textContent = y;
+    it.append(sw, nm); leg.append(it);
+  });
+  el.append(leg);
+  const tip = hwTip(el);
+  g.on('pointerenter pointermove', (ev, r) => tip.show(ev, [['t1', r.c + ' · ' + r.y], ['t2', hwUnits(r.v)]]))
+    .on('pointerleave', () => tip.hide());
+};
+
+dash.draw('cmp-total', (el) => {
+  const t = dash.data('totaux');
+  if (!hwState(el, t)) return;
+  const ys = t.data.map((r) => r.annee);
+  const items = t.data.map((r) => ({label: r.annee, value: r.total, color: hwYearColor(r.annee, ys), sub: 'Champion : ' + r.champion + ' (' + hwFmt.format(r.championQte) + ')'}));
+  hwReveal('cmp-total', el, (mode) => hwColumns(el, items, mode));
+});
+
+dash.draw('cmp-cat', (el) => {
+  const d = dash.data('categories');
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  const years = t.data.map((r) => r.annee);
+  const last = years[years.length - 1];
+  const val = (c, y) => { const m = d.data.find((r) => r.annee === y && r.categorie === c); return m ? m.quantite : 0; };
+  const cats = [...new Set(d.data.map((r) => r.categorie))].sort((a, b) => val(b, last) - val(a, last));
+  hwReveal('cmp-cat', el, (mode) => hwGrouped(el, cats, years, val, mode));
+});
+
 let hwSortKey = 'quantite', hwSortDir = -1, hwQuery = '';
 dash.draw('table-body', (tb) => {
   const d = dash.data('bonbons');
-  if (d.status !== 'ok') { tb.replaceChildren(); return; }
+  const t = dash.data('totaux');
+  if (d.status !== 'ok' || t.status !== 'ok') { tb.replaceChildren(); return; }
+  hwSelYear(t.data);
   const q = hwQuery.trim().toLowerCase();
-  const max = d3.max(d.data, (r) => Number(r.quantite)) || 1;
-  const rows = d.data.filter((r) => !q || (r.bonbon + ' ' + r.categorie).toLowerCase().includes(q));
+  const yearRows = hwOfYear(d.data);
+  const max = d3.max(yearRows, (r) => Number(r.quantite)) || 1;
+  const rows = yearRows.filter((r) => !q || (r.bonbon + ' ' + r.categorie).toLowerCase().includes(q));
   rows.sort((a, b) => hwSortKey === 'quantite'
     ? hwSortDir * (Number(a.quantite) - Number(b.quantite))
     : hwSortDir * String(a[hwSortKey]).localeCompare(String(b[hwSortKey]), 'fr'));
   tb.replaceChildren(...rows.map((r) => {
     const tr = document.createElement('tr');
+    tr.dataset.key = encodeURIComponent(String(r.annee)) + ',' + encodeURIComponent(r.bonbon);
     const c1 = document.createElement('td'); c1.textContent = r.bonbon;
     const c2 = document.createElement('td'); c2.textContent = r.categorie;
     const c3 = document.createElement('td'); c3.className = 'n';
@@ -1152,9 +1070,12 @@ document.querySelectorAll('.hw-sort').forEach((btn) => {
 document.querySelectorAll('.hw-search').forEach((inp) => {
   inp.addEventListener('input', () => { hwQuery = inp.value; dash.draw('table-body'); });
 });
+
 </script>
 
-<script>window.__dashRunAll();</script>
+<script>
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => window.__dashStart()); else window.__dashStart();
+</script>
 </div>
 </body>
 </html>
