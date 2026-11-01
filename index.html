@@ -196,6 +196,12 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
 .hw-chart text.dnum{font-family:var(--chunky);font-weight:900;font-size:2.6rem;fill:var(--orange);filter:drop-shadow(0 0 10px rgba(255,122,26,.6))}
 .hw-chart text.dlbl{fill:var(--ink-dim);font-weight:700}
 .hw-chart path{transition:opacity .15s}
+.hw-refill{all:unset;cursor:pointer;align-self:center;display:inline-flex;align-items:center;gap:.5rem;margin-top:var(--cds-gap-sm);
+  font-family:var(--chunky);font-weight:900;font-size:1.05rem;letter-spacing:.03em;color:#0b2b04;background:var(--slime);
+  padding:.55em 1.2em;border-radius:999px;box-shadow:0 3px 0 #2f8f1a,0 0 18px rgba(124,255,79,.45)}
+.hw-refill svg{width:1.1em;height:1.1em}
+.hw-refill:active{transform:translateY(2px);box-shadow:0 1px 0 #2f8f1a,0 0 18px rgba(124,255,79,.45)}
+.hw-refill:focus-visible{outline:2px solid var(--candle);outline-offset:3px}
 .hw-chart text.mnum{font-weight:800;font-size:15px;fill:#1a1020}
 .hw-chart text.tname{fill:#efeaff;font-weight:700;font-size:var(--cds-font-size-caption)}
 .hw-chart text.tnum{font-family:var(--chunky);font-weight:900;font-size:1.9rem;font-variant-numeric:tabular-nums}
@@ -392,8 +398,9 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
     </div>
     <div class="hw-card hw-reveal" id="chaudron">
       <h2>Le chaudron de la sorcière</h2>
-      <p class="note">Chaque bulle, c'est un bonbon. Regarde le chaudron se remplir!</p>
+      <p class="note">Chaque bulle, c'est un bonbon. Regarde le chaudron se remplir, puis recommence autant de fois que tu veux!</p>
       <div class="hw-chart tall dash-skeleton" data-draw="bocal" data-source="categories"></div>
+      <button class="hw-refill" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M20.5 3.5v5h-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Remplir à nouveau</button>
     </div>
   </section>
 
@@ -1169,6 +1176,22 @@ dash.draw('table-body', (tb) => {
   }));
 });
 
+/* « Remplir à nouveau » : vide le chaudron et le remplit encore une fois. */
+document.querySelectorAll('.hw-refill').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.hw-card');
+    const el = card && card.querySelector('[data-draw="bocal"]');
+    const d = dash.data('categories');
+    const t = dash.data('totaux');
+    if (!el || d.status !== 'ok' || t.status !== 'ok') return;
+    hwSelYear(t.data);
+    const io = hwObs.get('bocal');
+    if (io) { io.disconnect(); hwObs.delete('bocal'); }
+    hwRevealed.add('bocal');
+    hwCauldron(el, hwOfYear(d.data), hwMotion ? 'animate' : 'static');
+  });
+});
+
 document.querySelectorAll('.hw-sort').forEach((btn) => {
   btn.addEventListener('click', () => {
     const key = btn.dataset.key;
@@ -1210,7 +1233,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-9';
+  const APP_VERSION = '2026.11.01-10';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
