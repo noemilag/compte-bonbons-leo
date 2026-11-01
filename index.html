@@ -1096,6 +1096,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
   box-shadow:0 0 0 1px rgba(255,122,26,.6),0 12px 32px rgba(0,0,0,.65),0 0 26px rgba(255,122,26,.4)}
 .hw-update[hidden]{display:none}
 .hw-update button{all:unset;cursor:pointer;background:#ff7a1a;color:#2a0d00;font-family:'Luckiest Guy',ui-rounded,system-ui,sans-serif;letter-spacing:.03em;padding:.5rem 1.1rem;border-radius:999px;box-shadow:0 3px 0 #9a3b00}
+.hw-update button[disabled]{opacity:.7}
 .hw-update button:active{transform:translateY(2px);box-shadow:0 1px 0 #9a3b00}
 @media (prefers-reduced-motion: no-preference){.hw-update:not([hidden]){animation:hw-upd .55s cubic-bezier(.2,.8,.2,1)}}
 @keyframes hw-upd{from{transform:translate(-50%,140%);opacity:0}to{transform:translate(-50%,0);opacity:1}}
@@ -1103,22 +1104,59 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-5';
+  const APP_VERSION = '2026.11.01-6';
   const bar = document.querySelector('.hw-update');
+  const msg = bar.querySelector('.msg');
+  const btn = bar.querySelector('button');
+  const KEY = 'hw-update-target';
+  const store = {
+    get() { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } },
+    set(v) { try { if (v) sessionStorage.setItem(KEY, v); else sessionStorage.removeItem(KEY); } catch (e) {} }
+  };
   let latest = null;
+  const show = (text, label) => { msg.textContent = text; btn.textContent = label; bar.hidden = false; };
+
+  /* Just came back from a tap on the button, but GitHub is still serving the old page. */
+  const target = store.get();
+  if (target && target !== APP_VERSION) {
+    latest = target;
+    show('La mise à jour arrive, réessaie dans une minute', 'Réessayer');
+  } else {
+    store.set(null);
+  }
+
   const check = async () => {
     try {
       const r = await fetch('version.json?t=' + Date.now(), {cache: 'no-store'});
       if (!r.ok) return;
       const j = await r.json();
-      if (j.version && j.version !== APP_VERSION) { latest = j.version; bar.hidden = false; }
+      if (j.version && j.version !== APP_VERSION) {
+        latest = j.version;
+        if (bar.hidden) show('Une nouvelle version est prête', 'Mettre à jour');
+      } else {
+        store.set(null);
+        bar.hidden = true;
+      }
     } catch (e) { /* hors ligne : on réessaiera plus tard */ }
   };
-  bar.querySelector('button').addEventListener('click', () => {
+
+  btn.addEventListener('click', async () => {
+    btn.textContent = 'Un instant…';
+    btn.disabled = true;
+    store.set(latest);
+    /* Make the phone forget the cached copies of the page before reloading. */
+    const bust = String(Date.now());
+    await Promise.allSettled([
+      fetch('./', {cache: 'reload'}),
+      fetch('index.html', {cache: 'reload'}),
+      fetch('./?v=' + bust, {cache: 'reload'}),
+      fetch('manifest.webmanifest', {cache: 'reload'})
+    ]);
     const u = new URL(location.href);
-    u.searchParams.set('v', latest || String(Date.now()));
+    u.searchParams.set('v', bust);
     location.replace(u.toString());
   });
+
   check();
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
   setInterval(check, 30 * 60 * 1000);
