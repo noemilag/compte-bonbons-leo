@@ -9,7 +9,7 @@ Les récoltes de bonbons d'Halloween de Léo, année après année, en chiffres 
 - `index.html` : toute l'app (graphiques faits avec [d3](https://d3js.org), polices Creepster, Luckiest Guy et Fredoka de Google Fonts).
 - `data/bonbons.csv` : le décompte de Léo, une ligne par sorte de bonbon et par année.
 - `data/soirees.csv` : les infos de chaque soirée (heures de marche, sacs donnés à la porte).
-- `icon.svg`, `icon-*.png`, `apple-touch-icon.png`, `manifest.webmanifest` : l'icône de l'app.
+- `icon-*.png`, `favicon-*.png`, `apple-touch-icon.png`, `manifest.webmanifest` : l'icône de l'app.
 
 ## Ajouter une nouvelle année
 
