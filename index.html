@@ -414,6 +414,13 @@ html body #dash-root .hw{padding-top:calc(var(--cds-pad-xl) + env(safe-area-inse
       <p class="note">Toutes les sortes de chocolat, de la plus à la moins nombreuse.</p>
       <div class="hw-chart dash-skeleton" data-draw="chart-choco" data-source="bonbons"></div>
     </div>
+    <div class="hw-card hw-reveal" id="chips">
+      <h2>Le sac de chips</h2>
+      <p class="note">Toutes les sortes de chips, de la plus à la moins nombreuse.</p>
+      <div class="hw-chart dash-skeleton" data-draw="chart-chips" data-source="bonbons"></div>
+    </div>
+  </section>
+  <section class="hw-grid">
     <div class="hw-card hw-reveal" id="decompte">
       <h2>Le grimoire de Léo</h2>
       <p class="note">Chaque ligne de la feuille de Léo. Touche un titre pour trier.</p>
@@ -733,7 +740,7 @@ deltaDraw('d-gros', 'gros', (v) => hwFmt.format(v));
 
 /* Year picker: one button per year in the data. */
 window.HW_DRAWS = ['years', 'annee-inline', 'total', 'total-inline', 'heures-inline', 'minute', 'champion', 'champion-qte', 'heure', 'sortes', 'ratio', 'sacs', 'gros',
-  'd-total', 'd-heure', 'd-sortes', 'd-ratio', 'd-gros', 'podium', 'bocal', 'chart-cat', 'chart-top', 'chart-choco', 'table-body', 'cmp-total', 'cmp-cat'];
+  'd-total', 'd-heure', 'd-sortes', 'd-ratio', 'd-gros', 'podium', 'bocal', 'chart-cat', 'chart-top', 'chart-choco', 'chart-chips', 'table-body', 'cmp-total', 'cmp-cat'];
 window.hwSetYear = (y) => {
   if (y === hwYear) return;
   hwYear = y;
@@ -929,6 +936,20 @@ dash.draw('chart-choco', (el) => {
   hwReveal('chart-choco', el, (mode) => hwBars(el, items, 'Sortes de chocolat', mode, '🦇'));
 });
 
+dash.draw('chart-chips', (el) => {
+  const d = dash.data('bonbons');
+  const t = dash.data('totaux');
+  if (!hwState(el, d.status === 'ok' ? t : d)) return;
+  hwSelYear(t.data);
+  const rows = hwOfYear(d.data).filter((r) => r.categorie === 'Chips').sort((a, b) => Number(b.quantite) - Number(a.quantite));
+  const tot = rows.reduce((s, r) => s + Number(r.quantite), 0);
+  const items = rows.map((r) => ({
+    label: r.bonbon, value: Number(r.quantite), color: hwColor('Chips'),
+    sub: hwPct.format(Number(r.quantite) / tot) + ' des chips'
+  }));
+  hwReveal('chart-chips', el, (mode) => hwBars(el, items, 'Sortes de chips', mode, null));
+});
+
 /* ---------- Year-over-year comparison ---------- */
 window.hwColumns = (el, items, mode) => {
   el.replaceChildren();
@@ -1104,7 +1125,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-6';
+  const APP_VERSION = '2026.11.01-7';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
