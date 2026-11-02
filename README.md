@@ -20,10 +20,10 @@ Pas besoin de toucher à `index.html`. Il suffit d'ajouter des lignes à la fin 
 ```
 annee,categorie,bonbon,quantite,gros
 2027,Chocolat,Kit Kat,14,0
-2027,Bonbons durs,Rockets,80,0
+2027,Bonbons classiques,Rockets,80,0
 ```
 
-- `categorie` : Chocolat, Chips, Bonbons durs, Jujubes, Spécial ou Réglisse. Une nouvelle catégorie fonctionne aussi.
+- `categorie` : Chocolat, Chips, Bonbons classiques, Jujubes, Spécial ou Réglisse. Une nouvelle catégorie fonctionne aussi.
 - `gros` : le nombre de formats géants compris dans la quantité (0 s'il n'y en a pas).
 
 `data/soirees.csv` : deux lignes par année.

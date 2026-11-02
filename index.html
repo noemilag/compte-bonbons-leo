@@ -818,7 +818,7 @@ html.hw-noscroll,html.hw-noscroll body{overflow:hidden}
 window.hwFmt = new Intl.NumberFormat('fr-CA');
 window.hwDec = new Intl.NumberFormat('fr-CA', {maximumFractionDigits: 1});
 window.hwPct = new Intl.NumberFormat('fr-CA', {style: 'percent', maximumFractionDigits: 1});
-const CAT_COLORS = {'Bonbons durs': '#ff7a1a', 'Chocolat': '#d4915b', 'Jujubes': '#7cff4f', 'Spécial': '#b46cff', 'Chips': '#ffd60a', 'Réglisse': '#ff4f6d'};
+const CAT_COLORS = {'Bonbons classiques': '#ff7a1a', 'Chocolat': '#d4915b', 'Jujubes': '#7cff4f', 'Spécial': '#b46cff', 'Chips': '#ffd60a', 'Réglisse': '#ff4f6d'};
 window.hwColor = (c) => CAT_COLORS[c] || '#00e5ff';
 const YEAR_COLORS = ['#b46cff', '#ff7a1a', '#7cff4f', '#00e5ff', '#ffd60a', '#ff4fa3'];
 window.hwGlow = (c) => `drop-shadow(0 0 6px ${c})`;
@@ -1374,7 +1374,7 @@ const hwFamChart = (id, cat, aria, subLabel, rider) => dash.draw(id, (el) => {
 });
 hwFamChart('chart-choco', 'Chocolat', 'Sortes de chocolat', 'du chocolat', '🦇');
 hwFamChart('chart-jujubes', 'Jujubes', 'Sortes de jujubes', 'des jujubes', null);
-hwFamChart('chart-durs', 'Bonbons durs', 'Sortes de bonbons durs', 'des bonbons durs', null);
+hwFamChart('chart-durs', 'Bonbons classiques', 'Sortes de bonbons classiques', 'des bonbons classiques', null)
 hwFamChart('chart-chips', 'Chips', 'Sortes de chips', 'des chips', null);
 hwFamChart('chart-reglisse', 'Réglisse', 'Sortes de réglisse', 'de la réglisse', null);
 hwFamChart('chart-special', 'Spécial', 'Bonbons spéciaux', 'des spéciaux', null);
@@ -2323,7 +2323,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-36';
+  const APP_VERSION = '2026.11.01-37';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
