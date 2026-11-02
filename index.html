@@ -580,36 +580,7 @@ button.tn-rod:focus-visible,button.tn-units:focus-visible{outline:2px solid var(
     <p class="say">En <b data-draw="annee-inline" data-source="totaux" data-field="annee" class="dash-skeleton">—</b>, après <b data-draw="heures-inline" data-source="totaux" data-field="heures" class="dash-skeleton">—</b> heures à cogner aux portes, Léo est rentré avec <b data-draw="total-inline" data-source="totaux" data-field="total" class="dash-skeleton">—</b> bonbons! Ça fait <b data-draw="minute" data-source="totaux" data-field="parMinute" class="dash-skeleton">—</b> bonbons par minute. Le roi de la nuit : les <b data-draw="champion" data-source="totaux" data-field="champion" class="dash-skeleton">—</b>, avec <b data-draw="champion-qte" data-source="totaux" data-field="championQte" class="dash-skeleton">—</b> morceaux.</p>
     <div class="hw-years" data-draw="years" data-source="totaux" role="group" aria-label="Choisir l’année"></div>
   </header>
-  <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 14 H36 Q46 14 46 27 Q46 40 38 40 Q34 40 31 34 H17 Q14 40 10 40 Q2 40 2 27 Q2 14 12 14 Z" fill="#6a2fa0"/><rect x="10" y="22" width="12" height="4" rx="1.5" fill="#ffd60a"/><rect x="14" y="18" width="4" height="12" rx="1.5" fill="#ffd60a"/><circle cx="33" cy="21" r="3" fill="#7cff4f"/><circle cx="39" cy="26" r="3" fill="#ff4fa3"/><circle cx="33" cy="31" r="3" fill="#ff7a1a"/><circle cx="27" cy="26" r="3" fill="#00e5ff"/></svg><div><span class="k">Chapitre 1</span><h3>À toi de jouer!</h3></div></div>
-  <section class="hw-grid hw-tens-wrap">
-    <div class="hw-card hw-reveal" id="devine">
-      <h2>Devine combien!</h2>
-      <p class="note">Fais ta prédiction avec le curseur, puis vérifie si tu étais proche.</p>
-      <div class="hw-guess dash-skeleton" data-draw="guess" data-source="categories bonbons"></div>
-    </div>
-  </section>
-  <section class="hw-grid hw-tens-wrap">
-    <div class="hw-card hw-reveal" id="balance">
-      <h2>La balance</h2>
-      <p class="note">Coche des bonbons de chaque côté (la flèche ▾ montre les sortes), choisis ton symbole, puis touche la balance!</p>
-      <div class="hw-balance dash-skeleton" data-draw="balance" data-source="categories bonbons"></div>
-    </div>
-  </section>
-  <section class="hw-grid hw-tens-wrap">
-    <div class="hw-card hw-reveal" id="dizaines">
-      <h2>Les bonbons en dizaines</h2>
-      <p class="note">Choisis une famille, compte les bâtons de 10 et les bonbons seuls, puis écris ton nombre!</p>
-      <div class="hw-tens dash-skeleton" data-draw="tens" data-source="categories"></div>
-    </div>
-  </section>
-  <section class="hw-grid hw-tens-wrap">
-    <div class="hw-card hw-reveal" id="jeu-dizaines">
-      <h2>Le jeu des dizaines</h2>
-      <p class="note">Choisis un tas, estime-le à l’œil, glisse <span class="hw-touch">ton doigt</span><span class="hw-mouse">ta souris</span> pour faire des paquets de 10, puis écris ton nombre!</p>
-      <div class="hw-tgame dash-skeleton" data-draw="tensgame" data-source="categories bonbons"></div>
-    </div>
-  </section>
-  <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 21 Q6 8 24 8 Q42 8 42 21 Z" fill="#c8682a"/><circle cx="16" cy="14" r="3.5" fill="#7cff4f"/><circle cx="24" cy="11" r="3.5" fill="#ff4fa3"/><circle cx="32" cy="14" r="3.5" fill="#b46cff"/><rect x="6" y="21" width="36" height="20" rx="3" fill="#8f4417"/><rect x="6" y="19" width="36" height="5" fill="#ffd60a"/><rect x="20.5" y="19" width="7" height="11" rx="2" fill="#ffd60a"/><circle cx="24" cy="25.5" r="1.6" fill="#5a2a0c"/></svg><div><span class="k">Chapitre 2</span><h3>Le trésor de la nuit</h3></div></div>
+  <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 21 Q6 8 24 8 Q42 8 42 21 Z" fill="#c8682a"/><circle cx="16" cy="14" r="3.5" fill="#7cff4f"/><circle cx="24" cy="11" r="3.5" fill="#ff4fa3"/><circle cx="32" cy="14" r="3.5" fill="#b46cff"/><rect x="6" y="21" width="36" height="20" rx="3" fill="#8f4417"/><rect x="6" y="19" width="36" height="5" fill="#ffd60a"/><rect x="20.5" y="19" width="7" height="11" rx="2" fill="#ffd60a"/><circle cx="24" cy="25.5" r="1.6" fill="#5a2a0c"/></svg><div><span class="k">Chapitre 1</span><h3>Un aperçu de ta récolte</h3></div></div>
   <section class="hw-tiles" id="chiffres">
     <div class="hw-tile hw-reveal">
       <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 24 L4 14 L4 34 Z" fill="#ffb066"/><path d="M33 24 L44 14 L44 34 Z" fill="#ffb066"/><circle cx="24" cy="24" r="12" fill="#ff7a1a"/><path d="M16 16 Q22 22 20 33" stroke="#ffd2a6" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 12.5 Q31 20 29 35" stroke="#ffd2a6" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
@@ -645,6 +616,35 @@ button.tn-rod:focus-visible,button.tn-units:focus-visible{outline:2px solid var(
       <b class="num dash-skeleton" data-draw="gros" data-source="totaux" data-field="gros">—</b>
       <span class="hw-delta" data-draw="d-gros" data-source="totaux" data-field="d_gros"></span>
       <span class="note">Les « gros » de Léo</span>
+    </div>
+  </section>
+  <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 14 H36 Q46 14 46 27 Q46 40 38 40 Q34 40 31 34 H17 Q14 40 10 40 Q2 40 2 27 Q2 14 12 14 Z" fill="#6a2fa0"/><rect x="10" y="22" width="12" height="4" rx="1.5" fill="#ffd60a"/><rect x="14" y="18" width="4" height="12" rx="1.5" fill="#ffd60a"/><circle cx="33" cy="21" r="3" fill="#7cff4f"/><circle cx="39" cy="26" r="3" fill="#ff4fa3"/><circle cx="33" cy="31" r="3" fill="#ff7a1a"/><circle cx="27" cy="26" r="3" fill="#00e5ff"/></svg><div><span class="k">Chapitre 2</span><h3>À toi de jouer!</h3></div></div>
+  <section class="hw-grid hw-tens-wrap">
+    <div class="hw-card hw-reveal" id="devine">
+      <h2>Devine combien!</h2>
+      <p class="note">Fais ta prédiction avec le curseur, puis vérifie si tu étais proche.</p>
+      <div class="hw-guess dash-skeleton" data-draw="guess" data-source="categories bonbons"></div>
+    </div>
+  </section>
+  <section class="hw-grid hw-tens-wrap">
+    <div class="hw-card hw-reveal" id="balance">
+      <h2>La balance</h2>
+      <p class="note">Coche des bonbons de chaque côté (la flèche ▾ montre les sortes), choisis ton symbole, puis touche la balance!</p>
+      <div class="hw-balance dash-skeleton" data-draw="balance" data-source="categories bonbons"></div>
+    </div>
+  </section>
+  <section class="hw-grid hw-tens-wrap">
+    <div class="hw-card hw-reveal" id="dizaines">
+      <h2>Les bonbons en dizaines</h2>
+      <p class="note">Choisis une famille, compte les bâtons de 10 et les bonbons seuls, puis écris ton nombre!</p>
+      <div class="hw-tens dash-skeleton" data-draw="tens" data-source="categories"></div>
+    </div>
+  </section>
+  <section class="hw-grid hw-tens-wrap">
+    <div class="hw-card hw-reveal" id="jeu-dizaines">
+      <h2>Le jeu des dizaines</h2>
+      <p class="note">Choisis un tas, estime-le à l’œil, glisse <span class="hw-touch">ton doigt</span><span class="hw-mouse">ta souris</span> pour faire des paquets de 10, puis écris ton nombre!</p>
+      <div class="hw-tgame dash-skeleton" data-draw="tensgame" data-source="categories bonbons"></div>
     </div>
   </section>
   <div class="hw-chapter hw-reveal"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 11 H8 Q8 23 17 24" stroke="#e0a800" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M34 11 H40 Q40 23 31 24" stroke="#e0a800" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M13 6 H35 V17 Q35 31 24 31 Q13 31 13 17 Z" fill="#ffd60a"/><path d="M18 10 V18 Q18 24 22 26" stroke="#fff3b0" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/><rect x="21" y="31" width="6" height="5" fill="#e0a800"/><rect x="14" y="36" width="20" height="6" rx="2" fill="#a86f00"/></svg><div><span class="k">Chapitre 3</span><h3>Qui a gagné la nuit?</h3></div></div>
@@ -2262,7 +2262,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-27';
+  const APP_VERSION = '2026.11.01-28';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
