@@ -1,6 +1,6 @@
 {
-  "name": "Halloween Dashboard",
-  "short_name": "Halloween Dashboard",
+  "name": "Compte-Bonbons",
+  "short_name": "Compte-Bonbons",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#05040a",

@@ -1,8 +1,8 @@
-# Halloween Dashboard · Le butin hanté de Léo 🎃
+# Compte-Bonbons · Le butin hanté de Léo 🎃
 
 Les récoltes de bonbons d'Halloween de Léo, année après année, en chiffres et en graphiques animés.
 
-**En ligne :** https://noemilag.github.io/halloween-dashboard/
+**En ligne :** https://noemilag.github.io/compte-bonbons-leo/
 
 ## Les fichiers
 

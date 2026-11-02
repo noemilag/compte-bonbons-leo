@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Halloween Dashboard · Le butin hanté de Léo</title>
+<title>Compte-Bonbons · Le butin hanté de Léo</title>
 <meta name="description" content="Les récoltes de bonbons d'Halloween de Léo, année après année, en chiffres et en graphiques.">
 <meta name="theme-color" content="#120724">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -11,12 +11,12 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="Halloween Dashboard">
-<meta name="application-name" content="Halloween Dashboard">
+<meta name="apple-mobile-web-app-title" content="Compte-Bonbons">
+<meta name="application-name" content="Compte-Bonbons">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta property="og:title" content="Halloween Dashboard · Le butin hanté de Léo">
+<meta property="og:title" content="Compte-Bonbons · Le butin hanté de Léo">
 <meta property="og:image" content="icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -615,7 +615,7 @@ html.hw-noscroll,html.hw-noscroll body{overflow:hidden}
       <text class="pk" x="720" y="120">🎃</text>
     </svg>
     <div class="hw-fog" aria-hidden="true"></div>
-    <h1><span class="l0">Halloween Dashboard</span>Le butin hanté <span class="l2">de Léo</span></h1>
+    <h1><span class="l0">Compte-Bonbons</span>Le butin hanté <span class="l2">de Léo</span></h1>
     <p class="say">En <b data-draw="annee-inline" data-source="totaux" data-field="annee" class="dash-skeleton">—</b>, après <b data-draw="heures-inline" data-source="totaux" data-field="heures" class="dash-skeleton">—</b> heures à cogner aux portes, Léo est rentré avec <b data-draw="total-inline" data-source="totaux" data-field="total" class="dash-skeleton">—</b> bonbons! Ça fait <b data-draw="minute" data-source="totaux" data-field="parMinute" class="dash-skeleton">—</b> bonbons par minute. Le roi de la nuit : les <b data-draw="champion" data-source="totaux" data-field="champion" class="dash-skeleton">—</b>, avec <b data-draw="champion-qte" data-source="totaux" data-field="championQte" class="dash-skeleton">—</b> morceaux.</p>
     <div class="hw-years" data-draw="years" data-source="totaux" role="group" aria-label="Choisir l’année"></div>
   </header>
@@ -2320,7 +2320,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
 <script>
 /* Bouton « Mettre à jour » : compare la version de cette page à version.json sur GitHub. */
 (function () {
-  const APP_VERSION = '2026.11.01-32';
+  const APP_VERSION = '2026.11.01-33';
   const bar = document.querySelector('.hw-update');
   const msg = bar.querySelector('.msg');
   const btn = bar.querySelector('button');
@@ -2455,7 +2455,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => wind
     g.fillStyle = '#2f145a'; g.beginPath(); g.arc(w - 76, 74, 34, 0, Math.PI * 2); g.fill();
   };
   const footer = (g, w, h) => {
-    const t = isCB() ? 'Compte-Bonbons · noemilag.github.io/compte-bonbons' : 'Halloween Dashboard · Le butin hanté';
+    const t = isCB() ? 'Compte-Bonbons · noemilag.github.io/compte-bonbons' : 'Compte-Bonbons · Le butin hanté de Léo';
     txt(g, t, w / 2, h - 46, {font: F.round(30, 600), color: C.dim});
   };
   const kicker = (g, s, x, y) => txt(g, s.toUpperCase(), x, y, {font: F.round(34, 700), color: C.purple});
